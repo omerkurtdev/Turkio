@@ -15,7 +15,7 @@ type TmdbId = {
 };
 const apiKey: string = "a1ef2874782b2fbd09891a4ac821df9a";
 const headers = {
-    'Referer': 'https://www.hdfilmcehennemi.de/',
+    'Referer': 'https://www.hdfilmcehennemi.de',
     'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
   };
 
@@ -280,7 +280,7 @@ const getSrc = async (params: TmdbId): Promise<TmdbId> => {
 
             if (link.startsWith("https://www.hdfilmcehennemi.de/playerr/")) {
               const parts = link ? link.split('/') : [];
-              const response = await needle('get', `http://127.0.0.1:11470/proxy/d=https%3A%2F%2Fwww.hdfilmcehennemi.de&h=referer:https%3A%2F%2Fwww.hdfilmcehennemi.de/playerr/${parts[4]}`);
+              const response = await needle('get', `https://www.hdfilmcehennemi.de/playerr/${parts[4]}`, {headers});
 
               if (response.statusCode === 200) {
                 const $ = cheerio.load(response.body);

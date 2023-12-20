@@ -42,6 +42,9 @@ builder.defineStreamHandler(async ({ type, id }) => {
     const getEmbed = await getEmbeds(getlink);
     const getSrcs = await getSrc(getEmbed);
 
+
+
+    
     console.log(getSrcs.srcVideo);
 
     // Example usage of getStreamDataArray with hardcoded stream

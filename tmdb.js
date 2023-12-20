@@ -317,7 +317,7 @@ var getSrc = function (params) { return __awaiter(_this, void 0, void 0, functio
                                         case 2:
                                             if (!link.startsWith("https://www.hdfilmcehennemi.de/playerr/")) return [3 /*break*/, 4];
                                             parts = link ? link.split('/') : [];
-                                            return [4 /*yield*/, needle('get', "http://127.0.0.1:11470/proxy/d=https%3A%2F%2Fwww.hdfilmcehennemi.de&h=referer:https%3A%2F%2Fwww.hdfilmcehennemi.de/playerr/".concat(parts[4]))];
+                                            return [4 /*yield*/, needle('get', "https://www.hdfilmcehennemi.de/playerr/".concat(parts[4]), { headers: headers })];
                                         case 3:
                                             response = _c.sent();
                                             if (response.statusCode === 200) {
