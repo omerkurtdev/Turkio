@@ -1,18 +1,6 @@
 const { addonBuilder } = require("stremio-addon-sdk");
 const { getMetaName, getSlug, getLinks, getEmbeds, getSrc } = require('./tmdb.js');
-
-const manifest = {
-  "id": "community.turkio",
-  "version": "0.0.1",
-  "contactEmail": "omerkurt000@gmail.com",
-  "catalogs": [],
-  "resources": ["stream"],
-  "types": ["movie", "series"],
-  "name": "Turkio",
-  "logo": "https://i.imgur.com/MhRjsWY.png",
-  "description": "Turkish dubbed movies or TV series from 3rd party providers, by baybey",
-};
-
+const manifest = require("./manifest.json")
 const builder = new addonBuilder(manifest);
 
 async function getStreamDataArray(titles, urls) {

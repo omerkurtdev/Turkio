@@ -237,6 +237,8 @@ var getEmbeds = function (params) { return __awaiter(_this, void 0, void 0, func
                         case 5:
                             error_1 = _c.sent();
                             console.error("Error occurred: ".concat(link));
+                            // Handle errors here
+                            reject(error_1); // Make sure to reject the promise in case of an error
                             return [3 /*break*/, 6];
                         case 6:
                             _i++;

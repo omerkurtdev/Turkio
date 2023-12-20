@@ -199,31 +199,31 @@ const getLinks = (params: TmdbId): Promise<TmdbId> => {
   });
 };
 
-const getEmbeds = async (params: TmdbId): Promise<TmdbId> => {
+const getEmbeds = async (params:TmdbId) => {
   return new Promise(async (resolve, reject) => {
     params.embedPlayer = [];
     try {
       if (params.links) {
         for (const link of params.links) {
           try {
-            
             const response = await needle('get', link, { follow_max: 5 });
-            
+
             // Check if the response is a redirect
             if (response.statusCode === 301 || response.statusCode === 302) {
               const newLocation = response.headers['location'];
               console.log(`Redirecting to: ${newLocation}`);
               // You may want to update 'link' to the new location
             }
-            
+
             const $ = cheerio.load(response.body);
             const player = $('iframe').attr('data-src');
-            params.embedPlayer?.push(player)
+            params.embedPlayer?.push(player);
             console.log(`Successful request: ${link}, Status Code: ${response.statusCode}`);
             // Perform your operations with the 'response' here
           } catch (error) {
             console.error(`Error occurred: ${link}`);
             // Handle errors here
+            reject(error); // Make sure to reject the promise in case of an error
           }
         }
       }
@@ -234,7 +234,6 @@ const getEmbeds = async (params: TmdbId): Promise<TmdbId> => {
     }
   });
 };
-
 const getSrc = async (params: TmdbId): Promise<TmdbId> => {
   return new Promise(async (resolve, reject) => {
     params.srcVideo = [];
