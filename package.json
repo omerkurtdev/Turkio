@@ -1,0 +1,19 @@
+{
+	"name": "stremio-addon-turkio",
+	"version": "0.0.1",
+	"description": "",
+	"scripts": {
+		"start": "node  server.js"
+	},
+	"dependencies": {
+		"@types/cheerio": "^0.22.35",
+		"cheerio": "^1.0.0-rc.12",
+		"needle": "^3.3.1",
+		"stremio-addon-sdk": "1.1.x"
+	},
+	"devDependencies": {
+		"@types/needle": "^3.2.3",
+		"@types/stremio-addon-sdk": "^1.6.10",
+		"typescript": "^5.3.3"
+	}
+}
