@@ -117,7 +117,7 @@ const getLinks = (params: TmdbId): Promise<TmdbId> => {
     params.links = [];
     params.players = [];
     if (params.type === "movie") {
-      const filmUrl: string = `http://127.0.0.1:11470/proxy/d=https%3A%2F%2Fwww.hdfilmcehennemi.de&h=referer:https%3A%2F%2Fwww.hdfilmcehennemi.de/${params.slug}`;
+      const filmUrl: string = `https://www.hdfilmcehennemi.de/${params.slug}`;
 
       needle.get(filmUrl, (err: any, resp: any, body: any) => {
         if (err) {
@@ -162,10 +162,10 @@ const getLinks = (params: TmdbId): Promise<TmdbId> => {
       });
     } 
     else if(params.type === "series"){
-    const diziUrl: string = `http://127.0.0.1:11470/proxy/d=https%3A%2F%2Fwww.hdfilmcehennemi.de&h=referer:https%3A%2F%2Fwww.hdfilmcehennemi.de/dizi/${params.slug}/sezon-${params.sezon}/bolum-${params.episode}`;
+    const diziUrl: string = `https://www.hdfilmcehennemi.de/dizi/${params.slug}/sezon-${params.sezon}/bolum-${params.episode}`;
     needle.get(diziUrl, (err: any, resp: any, body: any) => {
       if (err) {
-        console.error("Error converting IMDb to TMDb:", err);
+        console.error("Getlink func err series:", err);
         reject(err);
         return;
       }
