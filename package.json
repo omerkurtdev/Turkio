@@ -3,7 +3,7 @@
 	"version": "0.0.1",
 	"description": "",
 	"scripts": {
-		"start": "node --unhandled-rejections=none  server.js"
+		"start": "node  server.js"
 	},
 	"dependencies": {
 		"@types/cheerio": "^0.22.35",
