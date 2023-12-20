@@ -14,6 +14,10 @@ type TmdbId = {
   srcVideo?:Array<string>;
 };
 const apiKey: string = "a1ef2874782b2fbd09891a4ac821df9a";
+const headers = {
+    'Referer': 'https://www.hdfilmcehennemi.de/',
+    'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+  };
 
 var getMetaName = (id: string): Promise<TmdbId> => {
   return new Promise((resolve, reject) => {
@@ -117,9 +121,9 @@ const getLinks = (params: TmdbId): Promise<TmdbId> => {
     params.links = [];
     params.players = [];
     if (params.type === "movie") {
-      const filmUrl: string = `https://www.hdfilmcehennemi.de/${params.slug}`;
+      const filmUrl: string = `https://www.hdfilmcehennemi.de/${params.slug}/`;
 
-      needle.get(filmUrl, (err: any, resp: any, body: any) => {
+      needle.get(filmUrl, { headers }, (err: any, resp: any, body: any) => {
         if (err) {
           console.error("Error converting IMDb to TMDb:", err);
           reject(err);
@@ -127,7 +131,6 @@ const getLinks = (params: TmdbId): Promise<TmdbId> => {
         }
 
         const $ = cheerio.load(body);
-
         $("body > div.main-container.container.p-0.mt-0.mt-lg-5 > div > main > div > div > div > div:nth-child(7) > div.card-body.p-0.pt-2.pb-2 > nav > a").each((index: any, element: HTMLElement) => {
           const href = $(element).attr("href");
           if (href !== "#") {
@@ -163,9 +166,9 @@ const getLinks = (params: TmdbId): Promise<TmdbId> => {
     } 
     else if(params.type === "series"){
     const diziUrl: string = `https://www.hdfilmcehennemi.de/dizi/${params.slug}/sezon-${params.sezon}/bolum-${params.episode}`;
-    needle.get(diziUrl, (err: any, resp: any, body: any) => {
+    needle.get(diziUrl, { headers }, (err: any, resp: any, body: any) => {
       if (err) {
-        console.error("Getlink func err series:", err);
+        console.error("Error converting IMDb to TMDb:", err);
         reject(err);
         return;
       }

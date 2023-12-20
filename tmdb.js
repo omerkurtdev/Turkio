@@ -38,6 +38,10 @@ var _this = this;
 var needle = require("needle");
 var cheerio = require("cheerio");
 var apiKey = "a1ef2874782b2fbd09891a4ac821df9a";
+var headers = {
+    'Referer': 'https://www.hdfilmcehennemi.de/',
+    'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+};
 var getMetaName = function (id) {
     return new Promise(function (resolve, reject) {
         var parts = id.split(":");
@@ -124,8 +128,8 @@ var getLinks = function (params) {
         params.links = [];
         params.players = [];
         if (params.type === "movie") {
-            var filmUrl = "https://www.hdfilmcehennemi.de/".concat(params.slug);
-            needle.get(filmUrl, function (err, resp, body) {
+            var filmUrl = "https://www.hdfilmcehennemi.de/".concat(params.slug, "/");
+            needle.get(filmUrl, { headers: headers }, function (err, resp, body) {
                 var _a;
                 if (err) {
                     console.error("Error converting IMDb to TMDb:", err);
@@ -163,9 +167,9 @@ var getLinks = function (params) {
         }
         else if (params.type === "series") {
             var diziUrl = "https://www.hdfilmcehennemi.de/dizi/".concat(params.slug, "/sezon-").concat(params.sezon, "/bolum-").concat(params.episode);
-            needle.get(diziUrl, function (err, resp, body) {
+            needle.get(diziUrl, { headers: headers }, function (err, resp, body) {
                 if (err) {
-                    console.error("Getlink func err series:", err);
+                    console.error("Error converting IMDb to TMDb:", err);
                     reject(err);
                     return;
                 }
@@ -272,14 +276,14 @@ var getSrc = function (params) { return __awaiter(_this, void 0, void 0, functio
                             _a.trys.push([1, 4, , 5]);
                             if (!params.embedPlayer) return [3 /*break*/, 3];
                             promises = params.embedPlayer.map(function (link) { return __awaiter(_this, void 0, void 0, function () {
-                                var headers, response, regexPattern, match, urlParts, parts, response, $, selectedElement, regex, matchss, decodedString, error_4;
+                                var headers_1, response, regexPattern, match, urlParts, parts, response, $, selectedElement, regex, matchss, decodedString, error_4;
                                 var _a, _b;
                                 return __generator(this, function (_c) {
                                     switch (_c.label) {
                                         case 0:
                                             _c.trys.push([0, 5, , 6]);
                                             if (!link.startsWith("https://vidmoly.to/embed")) return [3 /*break*/, 2];
-                                            headers = {
+                                            headers_1 = {
                                                 accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8',
                                                 'accept-language': 'en-US,en;q=0.8',
                                                 'sec-ch-ua': '"Not_A Brand";v="8", "Chromium";v="120", "Brave";v="120"',
@@ -294,7 +298,7 @@ var getSrc = function (params) { return __awaiter(_this, void 0, void 0, functio
                                                 Referer: 'https://www.hdfilmcehennemi.de/',
                                                 'Referrer-Policy': 'strict-origin-when-cross-origin',
                                             };
-                                            return [4 /*yield*/, needle('get', link, { headers: headers })];
+                                            return [4 /*yield*/, needle('get', link, { headers: headers_1 })];
                                         case 1:
                                             response = _c.sent();
                                             if (response.statusCode === 200) {
