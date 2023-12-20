@@ -124,7 +124,7 @@ var getLinks = function (params) {
         params.links = [];
         params.players = [];
         if (params.type === "movie") {
-            var filmUrl = "http://127.0.0.1:11470/proxy/d=https%3A%2F%2Fwww.hdfilmcehennemi.de&h=referer:https%3A%2F%2Fwww.hdfilmcehennemi.de/".concat(params.slug);
+            var filmUrl = "https://www.hdfilmcehennemi.de/".concat(params.slug);
             needle.get(filmUrl, function (err, resp, body) {
                 var _a;
                 if (err) {
@@ -162,10 +162,10 @@ var getLinks = function (params) {
             });
         }
         else if (params.type === "series") {
-            var diziUrl = "http://127.0.0.1:11470/proxy/d=https%3A%2F%2Fwww.hdfilmcehennemi.de&h=referer:https%3A%2F%2Fwww.hdfilmcehennemi.de/dizi/".concat(params.slug, "/sezon-").concat(params.sezon, "/bolum-").concat(params.episode);
+            var diziUrl = "https://www.hdfilmcehennemi.de/dizi/".concat(params.slug, "/sezon-").concat(params.sezon, "/bolum-").concat(params.episode);
             needle.get(diziUrl, function (err, resp, body) {
                 if (err) {
-                    console.error("Error converting IMDb to TMDb:", err);
+                    console.error("Getlink func err series:", err);
                     reject(err);
                     return;
                 }
