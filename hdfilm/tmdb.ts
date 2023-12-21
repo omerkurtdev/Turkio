@@ -14,10 +14,6 @@ type TmdbId = {
   srcVideo?:Array<string>;
 };
 const apiKey: string = "a1ef2874782b2fbd09891a4ac821df9a";
-const headers = {
-    'Referer': 'https://www.hdfilmcehennemi.de',
-    'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-  };
 
 var getMetaName = (id: string): Promise<TmdbId> => {
   return new Promise((resolve, reject) => {
@@ -123,7 +119,7 @@ const getLinks = (params: TmdbId): Promise<TmdbId> => {
     if (params.type === "movie") {
       const filmUrl: string = `https://www.hdfilmcehennemi.de/${params.slug}/`;
 
-      needle.get(filmUrl, { headers }, (err: any, resp: any, body: any) => {
+      needle.get(filmUrl, (err: any, resp: any, body: any) => {
         if (err) {
           console.error("Error converting IMDb to TMDb:", err);
           reject(err);
@@ -165,8 +161,8 @@ const getLinks = (params: TmdbId): Promise<TmdbId> => {
       });
     } 
     else if(params.type === "series"){
-    const diziUrl: string = `https://www.hdfilmcehennemi.de/dizi/${params.slug}/sezon-${params.sezon}/bolum-${params.episode}`;
-    needle.get(diziUrl, { headers }, (err: any, resp: any, body: any) => {
+    const diziUrl: string = `https://www.hdfilmcehennemi.de/dizi/${params.slug}/sezon-${params.sezon}/bolum-${params.episode}/`;
+    needle.get(diziUrl, (err: any, resp: any, body: any) => {
       if (err) {
         console.error("Error converting IMDb to TMDb:", err);
         reject(err);
@@ -280,7 +276,12 @@ const getSrc = async (params: TmdbId): Promise<TmdbId> => {
 
             if (link.startsWith("https://www.hdfilmcehennemi.de/playerr/")) {
               const parts = link ? link.split('/') : [];
-              const response = await needle('get', `https://www.hdfilmcehennemi.de/playerr/${parts[4]}`, {headers});
+              const headers = {
+                Referer: "https://www.hdfilmcehennemi.de/",
+                'User-Agent': "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+                // Other headers as needed
+              };
+              const response = await needle('get', `https://www.hdfilmcehennemi.de/playerr/${parts[4]}/`, {headers});
 
               if (response.statusCode === 200) {
                 const $ = cheerio.load(response.body);
