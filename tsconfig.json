@@ -107,6 +107,7 @@
     "skipLibCheck": true                                 /* Skip type checking all .d.ts files. */
   },
   "files": [
-    "hdfilm/tmdb.ts"
+    "provider/tmdb.ts",
+    "provider/dizipal.ts"
   ]
 }

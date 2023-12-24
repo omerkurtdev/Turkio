@@ -1,9 +1,11 @@
 const { addonBuilder } = require("stremio-addon-sdk");
 const { getMetaName, getSlug, getLinks, getEmbeds, getSrc } = require('./tmdb.js');
+const { getSlugDizipal, getDizipalLinks } = require('./dizipal.js');
+
 const manifest = require("./manifest.json")
 const builder = new addonBuilder(manifest);
 
-async function getStreamDataArray(titles, urls) {
+async function getStreamDataArray(titles, urls, provider) {
   try {
     const streams = titles.map((title, index) => {
       return {
@@ -16,7 +18,7 @@ async function getStreamDataArray(titles, urls) {
             }
           }
         },
-        "title": "Hdfilmcehennemi \n" + title + "\n🇹🇷",
+        "title": provider+ "\n" + title + "\n🇹🇷",
         "url": urls[index]
       };
     });
@@ -38,22 +40,30 @@ builder.defineStreamHandler(async ({ type, id }) => {
 
     // Burada getFilm fonksiyonunu çağırabilir ve sonuçları işleyebilirsiniz
     const getSlugs = await getSlug(tmdbInfo);
+
     const getlink = await getLinks(getSlugs);
     const getEmbed = await getEmbeds(getlink);
     const getSrcs = await getSrc(getEmbed);
 
-
-
-    
     console.log(getSrcs.srcVideo);
+
+
+    const getSlugDizipalUrl = await getSlugDizipal(tmdbInfo);
+    const dizipalLinks = await getDizipalLinks(getSlugDizipalUrl);
+    const dizipalLink=dizipalLinks.srcVideo
+    const dizipalTitle=dizipalLinks.players
+    const dizipalProvider=dizipalLinks.provider
+
+    const dynamicStreamsDizipal = await getStreamDataArray(dizipalTitle, dizipalLink,dizipalProvider);
 
     // Example usage of getStreamDataArray with hardcoded stream
     const titles = getSrcs.players;
     const urls = getSrcs.srcVideo;
+    const providerHd = getSrcs.provider;
 
-    const dynamicStreams = await getStreamDataArray(titles, urls);
+    const dynamicStreams = await getStreamDataArray(titles, urls, providerHd);
     
-    return Promise.resolve(dynamicStreams);
+    return Promise.resolve(dynamicStreams,dynamicStreamsDizipal);
   } catch (error) {
     console.error('Error fetching stream data:', error);
     return Promise.resolve({ streams: [] }); // Return an empty array if there's an error

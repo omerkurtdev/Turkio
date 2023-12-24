@@ -1,17 +1,19 @@
 var needle = require("needle");
 var cheerio = require("cheerio");
-type TmdbId = {
+export type TmdbId = {
   type: "movie" | "series";
   title: string;
   imdb: string;
   sezon?: string;
   episode?: string;
   slug?: string;
+  originalTitle?:string;
   players?:Array<string>;
   links?:Array<string>;
   embedPlayer?: Array<string>;
   provider?: string;
   srcVideo?:Array<string>;
+  dizipalSlug?:string;
 };
 const apiKey: string = "a1ef2874782b2fbd09891a4ac821df9a";
 
@@ -29,7 +31,6 @@ var getMetaName = (id: string): Promise<TmdbId> => {
         reject(err);
         return;
       }
-
       if (
         resp.statusCode === 200 &&
         body &&
@@ -40,8 +41,8 @@ var getMetaName = (id: string): Promise<TmdbId> => {
           type: "movie",
           title: body.movie_results[0].title,
           imdb: imdb,
+          originalTitle: body.movie_results[0].original_title
         };
-        console.log(tmdbId);
         resolve(tmdbId);
       } else if (
         resp.statusCode === 200 &&
@@ -55,8 +56,10 @@ var getMetaName = (id: string): Promise<TmdbId> => {
           imdb: imdb,
           sezon: sezon,
           episode: episode,
+          originalTitle: body.tv_results[0].original_name
+
         };
-        console.log(tmdbId);
+        console.log(body);
 
         resolve(tmdbId);
       } else {
@@ -292,6 +295,7 @@ const getSrc = async (params: TmdbId): Promise<TmdbId> => {
                 if (matchss) {
                   const decodedString = Buffer.from(matchss[0], 'base64').toString('utf-8');
                   params.srcVideo?.push(decodedString);
+                  params.provider="HDfilmcehennemi"
                 } else {
                   console.error('No match found or match[0] is undefined.');
                 }
